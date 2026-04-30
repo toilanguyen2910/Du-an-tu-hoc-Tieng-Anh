@@ -103,6 +103,12 @@ h4 {
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
 }
 
+.language-switcher {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -146,6 +152,20 @@ h4 {
   color: var(--text);
   background: rgba(124, 140, 255, 0.16);
   border-color: rgba(124, 140, 255, 0.3);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.status-pill.soft {
+  color: var(--muted);
 }
 
 button:hover {

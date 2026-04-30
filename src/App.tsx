@@ -1,4 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+type Language = 'en' | 'vi';
 
 type Lesson = {
   id: number;
@@ -19,6 +21,50 @@ type QuizQuestion = {
   prompt: string;
   choices: string[];
   answer: number;
+};
+
+type Copy = {
+  eyebrow: string;
+  title: string;
+  topline: string;
+  continueLabel: string;
+  tabs: { dashboard: string; lessons: string; review: string; progress: string };
+  todayFocus: string;
+  dashboardLead: string;
+  startLesson: string;
+  openReview: string;
+  lessonsDone: string;
+  wordsLearned: string;
+  currentStreak: string;
+  nextLessons: string;
+  nextLessonsSub: string;
+  reviewWords: string;
+  reviewWordsSub: string;
+  progressOverview: string;
+  progressOverviewSub: string;
+  weeklyTarget: string;
+  quizAccuracy: string;
+  focusArea: string;
+  lessonList: string;
+  lessonListSub: string;
+  topic: string;
+  coreWords: string;
+  progress: string;
+  goToReview: string;
+  backToDashboard: string;
+  reviewTitle: string;
+  reviewSub: string;
+  quizPreview: string;
+  progressTrack: string;
+  studyRhythm: string;
+  studyRhythmSub: string;
+  thisWeek: string;
+  nextGoal: string;
+  focusNow: string;
+  readyToday: string;
+  sessionTag: string;
+  dueTag: string;
+  weeklyCompletion: string;
 };
 
 const lessons: Lesson[] = [
@@ -73,6 +119,95 @@ const quiz: QuizQuestion[] = [
   },
 ];
 
+const copy: Record<Language, Copy> = {
+  en: {
+    eyebrow: 'Personal English Study',
+    title: 'Learn English in a simple daily flow.',
+    topline: 'Built for short sessions, quick review, and visible progress every day.',
+    continueLabel: 'Continue learning',
+    tabs: { dashboard: 'Dashboard', lessons: 'Lessons', review: 'Review', progress: 'Progress' },
+    todayFocus: "Today's focus",
+    dashboardLead: '15 minutes, one lesson, one review set.',
+    startLesson: 'Start lesson',
+    openReview: 'Open review',
+    lessonsDone: 'Lessons done',
+    wordsLearned: 'Words learned',
+    currentStreak: 'Current streak',
+    nextLessons: 'Next lessons',
+    nextLessonsSub: 'Based on your current level',
+    reviewWords: 'Review words',
+    reviewWordsSub: 'Words you should revisit',
+    progressOverview: 'Progress overview',
+    progressOverviewSub: 'Small steps, every day',
+    weeklyTarget: 'Weekly target',
+    quizAccuracy: 'Quiz accuracy',
+    focusArea: 'Focus area',
+    lessonList: 'Lesson list',
+    lessonListSub: 'Pick one lesson to study now',
+    topic: 'Topic',
+    coreWords: 'Core words',
+    progress: 'Progress',
+    goToReview: 'Go to review',
+    backToDashboard: 'Back to dashboard',
+    reviewTitle: 'Review words',
+    reviewSub: 'Focus on the words you keep missing',
+    quizPreview: 'Quiz preview',
+    progressTrack: 'Track the learning rhythm',
+    studyRhythm: 'Study rhythm',
+    studyRhythmSub: 'Your personal weekly target',
+    thisWeek: 'This week',
+    nextGoal: 'Next goal',
+    focusNow: 'Focus now',
+    readyToday: "Ready for today's lesson",
+    sessionTag: '10 min session',
+    dueTag: 'Review due today',
+    weeklyCompletion: 'Weekly completion',
+  },
+  vi: {
+    eyebrow: 'Học Tiếng Anh Cá Nhân',
+    title: 'Học tiếng Anh theo nhịp đơn giản mỗi ngày.',
+    topline: 'Tối ưu cho các buổi học ngắn, ôn nhanh và thấy tiến độ rõ ràng mỗi ngày.',
+    continueLabel: 'Tiếp tục học',
+    tabs: { dashboard: 'Bảng chính', lessons: 'Bài học', review: 'Ôn tập', progress: 'Tiến độ' },
+    todayFocus: 'Mục tiêu hôm nay',
+    dashboardLead: '15 phút, một bài học, một bộ ôn tập.',
+    startLesson: 'Bắt đầu học',
+    openReview: 'Mở ôn tập',
+    lessonsDone: 'Số bài đã học',
+    wordsLearned: 'Số từ đã học',
+    currentStreak: 'Chuỗi ngày học',
+    nextLessons: 'Bài học tiếp theo',
+    nextLessonsSub: 'Dựa trên mức hiện tại của bạn',
+    reviewWords: 'Từ cần ôn',
+    reviewWordsSub: 'Những từ bạn nên xem lại',
+    progressOverview: 'Tổng quan tiến độ',
+    progressOverviewSub: 'Mỗi ngày một chút',
+    weeklyTarget: 'Mục tiêu tuần',
+    quizAccuracy: 'Độ chính xác quiz',
+    focusArea: 'Phần cần tập trung',
+    lessonList: 'Danh sách bài học',
+    lessonListSub: 'Chọn một bài để học ngay',
+    topic: 'Chủ đề',
+    coreWords: 'Từ cốt lõi',
+    progress: 'Tiến độ',
+    goToReview: 'Đi tới ôn tập',
+    backToDashboard: 'Quay về bảng chính',
+    reviewTitle: 'Ôn tập từ vựng',
+    reviewSub: 'Tập trung vào những từ bạn hay quên',
+    quizPreview: 'Quiz xem nhanh',
+    progressTrack: 'Theo dõi nhịp học',
+    studyRhythm: 'Nhịp học',
+    studyRhythmSub: 'Mục tiêu tuần của riêng bạn',
+    thisWeek: 'Tuần này',
+    nextGoal: 'Mục tiêu tiếp theo',
+    focusNow: 'Đang tập trung',
+    readyToday: 'Sẵn sàng cho bài hôm nay',
+    sessionTag: 'Phiên 10 phút',
+    dueTag: 'Đến lịch ôn hôm nay',
+    weeklyCompletion: 'Hoàn thành tuần',
+  },
+};
+
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="stat">
@@ -94,9 +229,31 @@ function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) 
 }
 
 function App() {
+  const [language, setLanguage] = useState<Language>(() => {
+    const saved = localStorage.getItem('study-language');
+    return saved === 'en' || saved === 'vi' ? saved : 'vi';
+  });
+  const text = copy[language];
+  useEffect(() => {
+    localStorage.setItem('study-language', language);
+  }, [language]);
+
   const [activeTab, setActiveTab] = useState<'dashboard' | 'lessons' | 'review' | 'progress'>('dashboard');
   const [selectedLesson, setSelectedLesson] = useState(lessons[0]);
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(quiz.length).fill(null));
+  const [answers, setAnswers] = useState<(number | null)[]>(() => {
+    const saved = localStorage.getItem('study-answers');
+    if (!saved) return Array(quiz.length).fill(null);
+    try {
+      const parsed = JSON.parse(saved) as (number | null)[];
+      return Array.isArray(parsed) && parsed.length === quiz.length ? parsed : Array(quiz.length).fill(null);
+    } catch {
+      return Array(quiz.length).fill(null);
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('study-answers', JSON.stringify(answers));
+  }, [answers]);
+
   const score = useMemo(
     () => answers.reduce((total: number, answer, index) => total + (answer === quiz[index].answer ? 1 : 0), 0),
     [answers],
@@ -106,22 +263,26 @@ function App() {
     <div className="app-shell">
       <header className="topbar">
         <div>
-          <p className="eyebrow">Personal English Study</p>
-          <h1>Learn English in a simple daily flow.</h1>
-          <p className="topline-note">Built for short sessions, quick review, and visible progress every day.</p>
+          <p className="eyebrow">{text.eyebrow}</p>
+          <h1>{text.title}</h1>
+          <p className="topline-note">{text.topline}</p>
         </div>
         <div className="topbar-actions">
-          <span className="status-pill">Ready for today&apos;s lesson</span>
-          <button className="primary-btn">Continue learning</button>
+          <div className="language-switcher" role="group" aria-label="Language switcher">
+            <button type="button" className={language === 'vi' ? 'tab active' : 'tab'} onClick={() => setLanguage('vi')}>VI</button>
+            <button type="button" className={language === 'en' ? 'tab active' : 'tab'} onClick={() => setLanguage('en')}>EN</button>
+          </div>
+          <span className="status-pill">{text.readyToday}</span>
+          <button className="primary-btn">{text.continueLabel}</button>
         </div>
       </header>
 
       <nav className="nav-tabs" aria-label="Primary">
         {[
-          ['dashboard', 'Dashboard'],
-          ['lessons', 'Lessons'],
-          ['review', 'Review'],
-          ['progress', 'Progress'],
+          ['dashboard', text.tabs.dashboard],
+          ['lessons', text.tabs.lessons],
+          ['review', text.tabs.review],
+          ['progress', text.tabs.progress],
         ].map(([key, label]) => (
           <button
             key={key}
@@ -137,30 +298,30 @@ function App() {
         <main className="grid-layout">
           <section className="hero-panel">
             <div className="hero-copy">
-              <p className="section-label">Today&apos;s focus</p>
-              <h2>15 minutes, one lesson, one review set.</h2>
+              <p className="section-label">{text.todayFocus}</p>
+              <h2>{text.dashboardLead}</h2>
               <p className="muted">
                 Your dashboard prioritizes what you need to study next, what you missed before, and what keeps the streak alive.
               </p>
               <div className="hero-badges">
-                <span className="status-pill">10 min session</span>
-                <span className="status-pill soft">Review due today</span>
+                <span className="status-pill">{text.sessionTag}</span>
+                <span className="status-pill soft">{text.dueTag}</span>
               </div>
               <div className="hero-actions">
-                <button className="primary-btn" onClick={() => setActiveTab('lessons')}>Start lesson</button>
-                <button className="secondary-btn" onClick={() => setActiveTab('review')}>Open review</button>
+                <button className="primary-btn" onClick={() => setActiveTab('lessons')}>{text.startLesson}</button>
+                <button className="secondary-btn" onClick={() => setActiveTab('review')}>{text.openReview}</button>
               </div>
             </div>
 
             <div className="hero-metrics">
-              <Stat label="Lessons done" value="12" />
-              <Stat label="Words learned" value="148" />
-              <Stat label="Current streak" value="6 days" />
+              <Stat label={text.lessonsDone} value="12" />
+              <Stat label={text.wordsLearned} value="148" />
+              <Stat label={text.currentStreak} value="6 days" />
             </div>
           </section>
 
           <section className="panel">
-            <SectionTitle title="Next lessons" subtitle="Based on your current level" />
+            <SectionTitle title={text.nextLessons} subtitle={text.nextLessonsSub} />
             <div className="lesson-list">
               {lessons.map((lesson) => (
                 <button
@@ -187,7 +348,7 @@ function App() {
           </section>
 
           <section className="panel">
-            <SectionTitle title="Review words" subtitle="Words you should revisit" />
+            <SectionTitle title={text.reviewWords} subtitle={text.reviewWordsSub} />
             <div className="word-grid">
               {reviewWords.map((item) => (
                 <div className="word-chip" key={item.word}>
@@ -199,19 +360,19 @@ function App() {
           </section>
 
           <section className="panel progress-panel">
-            <SectionTitle title="Progress overview" subtitle="Small steps, every day" />
-            <div className="progress-card">
-              <div>
-                <p className="section-label">Weekly target</p>
-                <strong>5 lessons</strong>
+            <SectionTitle title={text.progressOverview} subtitle={text.progressOverviewSub} />
+            <div className="progress-stack">
+              <Stat label={text.weeklyTarget} value="5 lessons" />
+              <Stat label={text.quizAccuracy} value="84%" />
+              <Stat label={text.focusArea} value="Speaking basics" />
+            </div>
+            <div className="progress-bar-wrap">
+              <div className="progress-bar-header">
+                <span className="muted">{text.weeklyCompletion}</span>
+                <strong>62%</strong>
               </div>
-              <div>
-                <p className="section-label">Quiz accuracy</p>
-                <strong>84%</strong>
-              </div>
-              <div>
-                <p className="section-label">Focus area</p>
-                <strong>Speaking basics</strong>
+              <div className="progress-track big">
+                <div className="progress-fill" style={{ width: '62%' }} />
               </div>
             </div>
           </section>
@@ -221,7 +382,7 @@ function App() {
       {activeTab === 'lessons' && (
         <main className="two-column-layout">
           <section className="panel">
-            <SectionTitle title="Lesson list" subtitle="Pick one lesson to study now" />
+            <SectionTitle title={text.lessonList} subtitle={text.lessonListSub} />
             <div className="lesson-stack">
               {lessons.map((lesson) => (
                 <button
@@ -242,13 +403,13 @@ function App() {
           <section className="panel lesson-detail">
             <SectionTitle title={selectedLesson.title} subtitle={selectedLesson.description} />
             <div className="detail-stats">
-              <Stat label="Topic" value={selectedLesson.topic} />
-              <Stat label="Core words" value={`${selectedLesson.words}`} />
-              <Stat label="Progress" value={`${selectedLesson.progress}%`} />
+              <Stat label={text.topic} value={selectedLesson.topic} />
+              <Stat label={text.coreWords} value={`${selectedLesson.words}`} />
+              <Stat label={text.progress} value={`${selectedLesson.progress}%`} />
             </div>
             <div className="detail-actions">
-              <button className="primary-btn" onClick={() => setActiveTab('review')}>Go to review</button>
-              <button className="secondary-btn" onClick={() => setActiveTab('dashboard')}>Back to dashboard</button>
+              <button className="primary-btn" onClick={() => setActiveTab('review')}>{text.goToReview}</button>
+              <button className="secondary-btn" onClick={() => setActiveTab('dashboard')}>{text.backToDashboard}</button>
             </div>
           </section>
         </main>
@@ -257,7 +418,7 @@ function App() {
       {activeTab === 'review' && (
         <main className="two-column-layout">
           <section className="panel">
-            <SectionTitle title="Review words" subtitle="Focus on the words you keep missing" />
+            <SectionTitle title={text.reviewTitle} subtitle={text.reviewSub} />
             <div className="review-list">
               {reviewWords.map((item) => (
                 <article className="review-row" key={item.word}>
@@ -272,7 +433,7 @@ function App() {
           </section>
 
           <section className="panel">
-            <SectionTitle title="Quiz preview" subtitle={`Score: ${score}/${quiz.length}`} />
+            <SectionTitle title={text.quizPreview} subtitle={`Score: ${score}/${quiz.length}`} />
             <div className="quiz-list">
               {quiz.map((item, index) => (
                 <article className="quiz-row" key={item.prompt}>
@@ -302,37 +463,28 @@ function App() {
       {activeTab === 'progress' && (
         <main className="two-column-layout">
           <section className="panel">
-            <SectionTitle title="Progress overview" subtitle="Track the learning rhythm" />
+            <SectionTitle title={text.progressOverview} subtitle={text.progressTrack} />
             <div className="progress-stack">
               <Stat label="Lessons completed" value="12" />
               <Stat label="Quiz accuracy" value="84%" />
               <Stat label="Streak" value="6 days" />
               <Stat label="Words learned" value="148" />
             </div>
-            <div className="progress-bar-wrap">
-              <div className="progress-bar-header">
-                <span className="muted">Weekly completion</span>
-                <strong>62%</strong>
-              </div>
-              <div className="progress-track big">
-                <div className="progress-fill" style={{ width: '62%' }} />
-              </div>
-            </div>
           </section>
 
           <section className="panel">
-            <SectionTitle title="Study rhythm" subtitle="Your personal weekly target" />
+            <SectionTitle title={text.studyRhythm} subtitle={text.studyRhythmSub} />
             <div className="progress-card weekly-card">
               <div>
-                <p className="section-label">This week</p>
+                <p className="section-label">{text.thisWeek}</p>
                 <strong>3 / 5 lessons</strong>
               </div>
               <div>
-                <p className="section-label">Next goal</p>
+                <p className="section-label">{text.nextGoal}</p>
                 <strong>Finish review set</strong>
               </div>
               <div>
-                <p className="section-label">Focus now</p>
+                <p className="section-label">{text.focusNow}</p>
                 <strong>Speaking basics</strong>
               </div>
             </div>
