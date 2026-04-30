@@ -97,7 +97,10 @@ function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'lessons' | 'review' | 'progress'>('dashboard');
   const [selectedLesson, setSelectedLesson] = useState(lessons[0]);
   const [answers, setAnswers] = useState<(number | null)[]>(Array(quiz.length).fill(null));
-  const score = useMemo(() => answers.reduce((total, answer, index) => total + (answer === quiz[index].answer ? 1 : 0), 0), [answers]);
+  const score = useMemo(
+    () => answers.reduce((total, answer, index) => total + (answer === quiz[index].answer ? 1 : 0), 0),
+    [answers],
+  );
 
   return (
     <div className="app-shell">
