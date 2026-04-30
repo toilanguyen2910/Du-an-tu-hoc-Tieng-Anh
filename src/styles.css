@@ -1,0 +1,348 @@
+:root {
+  --bg: #0b1020;
+  --panel: rgba(15, 21, 41, 0.88);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: #f4f7fb;
+  --muted: #9aa7c1;
+  --accent: #7c8cff;
+  --accent-2: #39d2c0;
+  --accent-3: #ffb86b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(124, 140, 255, 0.22), transparent 35%),
+    radial-gradient(circle at right center, rgba(57, 210, 192, 0.18), transparent 28%),
+    var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+.topbar {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.eyebrow, .section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  line-height: 0.95;
+  max-width: 10ch;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  max-width: 14ch;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+h4 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.muted {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.primary-btn, .secondary-btn, .tab, .lesson-button, .lesson-card, .option {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, var(--accent), #9b7cff);
+  color: white;
+  box-shadow: 0 12px 24px rgba(124, 140, 255, 0.25);
+  padding: 0.9rem 1.2rem;
+}
+
+.secondary-btn {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-color: var(--panel-border);
+  padding: 0.9rem 1.2rem;
+}
+
+.tab {
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  border-color: rgba(255,255,255,0.06);
+  padding: 0.8rem 1rem;
+}
+
+.tab.active {
+  color: var(--text);
+  background: rgba(124, 140, 255, 0.16);
+  border-color: rgba(124, 140, 255, 0.3);
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.grid-layout, .two-column-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.grid-layout {
+  grid-template-columns: 1.35fr 1fr;
+}
+
+.two-column-layout {
+  grid-template-columns: 1fr 1fr;
+}
+
+.hero-panel, .panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 28px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+}
+
+.hero-panel {
+  grid-row: span 2;
+  padding: 28px;
+  display: grid;
+  gap: 24px;
+  align-content: space-between;
+  min-height: 640px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.stat span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.stat strong {
+  font-size: 1.4rem;
+}
+
+.panel {
+  padding: 22px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.lesson-list, .word-grid, .progress-card, .lesson-stack, .review-list, .quiz-list, .progress-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.lesson-row, .lesson-card, .review-row, .quiz-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.lesson-row {
+  padding: 16px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.lesson-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.lesson-button, .lesson-card, .option {
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.08);
+  padding: 16px;
+  border-radius: 20px;
+  text-align: left;
+}
+
+.lesson-card.active, .option.active {
+  border-color: rgba(124, 140, 255, 0.4);
+  background: rgba(124, 140, 255, 0.16);
+}
+
+.lesson-meta {
+  min-width: 140px;
+  text-align: right;
+}
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.word-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.word-chip, .review-row {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.word-chip strong, .progress-card strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.progress-panel {
+  grid-column: 2;
+}
+
+.progress-card {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.lesson-stack, .detail-actions, .quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+.lesson-detail {
+  display: grid;
+  gap: 18px;
+}
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.detail-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.review-row, .quiz-row {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.quiz-prompt {
+  font-weight: 600;
+}
+
+.quiz-options {
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.option {
+  width: 100%;
+  border-radius: 16px;
+}
+
+@media (max-width: 900px) {
+  .grid-layout,
+  .two-column-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-panel {
+    grid-column: auto;
+  }
+
+  .hero-panel {
+    min-height: auto;
+  }
+
+  .topbar, .panel-head, .lesson-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-metrics,
+  .progress-card,
+  .word-grid,
+  .detail-stats,
+  .quiz-options,
+  .detail-actions {
+    grid-template-columns: 1fr;
+  }
+}
