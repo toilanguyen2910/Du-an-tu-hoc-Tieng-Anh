@@ -108,8 +108,12 @@ function App() {
         <div>
           <p className="eyebrow">Personal English Study</p>
           <h1>Learn English in a simple daily flow.</h1>
+          <p className="topline-note">Built for short sessions, quick review, and visible progress every day.</p>
         </div>
-        <button className="primary-btn">Continue learning</button>
+        <div className="topbar-actions">
+          <span className="status-pill">Ready for today&apos;s lesson</span>
+          <button className="primary-btn">Continue learning</button>
+        </div>
       </header>
 
       <nav className="nav-tabs" aria-label="Primary">
@@ -138,6 +142,10 @@ function App() {
               <p className="muted">
                 Your dashboard prioritizes what you need to study next, what you missed before, and what keeps the streak alive.
               </p>
+              <div className="hero-badges">
+                <span className="status-pill">10 min session</span>
+                <span className="status-pill soft">Review due today</span>
+              </div>
               <div className="hero-actions">
                 <button className="primary-btn" onClick={() => setActiveTab('lessons')}>Start lesson</button>
                 <button className="secondary-btn" onClick={() => setActiveTab('review')}>Open review</button>
@@ -300,6 +308,15 @@ function App() {
               <Stat label="Quiz accuracy" value="84%" />
               <Stat label="Streak" value="6 days" />
               <Stat label="Words learned" value="148" />
+            </div>
+            <div className="progress-bar-wrap">
+              <div className="progress-bar-header">
+                <span className="muted">Weekly completion</span>
+                <strong>62%</strong>
+              </div>
+              <div className="progress-track big">
+                <div className="progress-fill" style={{ width: '62%' }} />
+              </div>
             </div>
           </section>
 

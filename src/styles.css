@@ -45,6 +45,20 @@ button {
   margin-bottom: 18px;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topline-note {
+  margin-top: 10px;
+  max-width: 50ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .eyebrow, .section-label {
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -87,6 +101,24 @@ h4 {
   border-radius: 999px;
   cursor: pointer;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: rgba(57, 210, 192, 0.12);
+  border: 1px solid rgba(57, 210, 192, 0.2);
+}
+
+.status-pill.soft {
+  background: rgba(124, 140, 255, 0.12);
+  border-color: rgba(124, 140, 255, 0.2);
 }
 
 .primary-btn {
@@ -240,12 +272,36 @@ button:hover {
   text-align: right;
 }
 
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.progress-bar-wrap {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.progress-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .progress-track {
   height: 8px;
   border-radius: 999px;
   overflow: hidden;
   background: rgba(255,255,255,0.08);
   margin-bottom: 8px;
+}
+
+.progress-track.big {
+  height: 10px;
+  margin-bottom: 0;
 }
 
 .progress-fill {
@@ -332,7 +388,10 @@ button:hover {
     min-height: auto;
   }
 
-  .topbar, .panel-head, .lesson-row {
+  .topbar,
+  .panel-head,
+  .lesson-row,
+  .topbar-actions {
     flex-direction: column;
     align-items: flex-start;
   }
