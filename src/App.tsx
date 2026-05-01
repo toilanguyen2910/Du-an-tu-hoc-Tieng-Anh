@@ -3,7 +3,7 @@ import { Dashboard } from './components/Dashboard';
 import { LessonsView } from './components/LessonsView';
 import { ProgressView } from './components/ProgressView';
 import { ReviewView } from './components/ReviewView';
-import { copy, lessons, quiz, reviewWords, type Language, type Lesson } from './content';
+import { copy, lessons, type Language, type Lesson } from './content';
 
 type Tab = 'dashboard' | 'lessons' | 'review' | 'progress';
 
@@ -22,12 +22,14 @@ function App() {
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(lessons[0]);
   const [answers, setAnswers] = useState<(number | null)[]>(() => {
     const saved = localStorage.getItem('study-answers');
-    if (!saved) return Array(quiz.length).fill(null);
+    if (!saved) return Array(lessons.flatMap((lesson) => lesson.quiz).length).fill(null);
     try {
       const parsed = JSON.parse(saved) as (number | null)[];
-      return Array.isArray(parsed) && parsed.length === quiz.length ? parsed : Array(quiz.length).fill(null);
+      return Array.isArray(parsed) && parsed.length === lessons.flatMap((lesson) => lesson.quiz).length
+        ? parsed
+        : Array(lessons.flatMap((lesson) => lesson.quiz).length).fill(null);
     } catch {
-      return Array(quiz.length).fill(null);
+      return Array(lessons.flatMap((lesson) => lesson.quiz).length).fill(null);
     }
   });
 
@@ -35,9 +37,10 @@ function App() {
     localStorage.setItem('study-answers', JSON.stringify(answers));
   }, [answers]);
 
+  const allQuiz = useMemo(() => lessons.flatMap((lesson) => lesson.quiz), []);
   const score = useMemo(
-    () => answers.reduce((total: number, answer, index) => total + (answer === quiz[index].answer ? 1 : 0), 0),
-    [answers],
+    () => answers.reduce((total: number, answer, index) => total + (answer === allQuiz[index].answer ? 1 : 0), 0),
+    [answers, allQuiz],
   );
 
   return (
@@ -79,7 +82,13 @@ function App() {
         <Dashboard
           text={text}
           lessons={lessons}
-          reviewWords={reviewWords}
+          reviewWords={lessons.flatMap((lesson) => lesson.vocabulary).slice(0, 6).map((item, index) => ({
+            word: item.word,
+            meaning: item.meaning,
+            example: item.example,
+            nextReview: index < 2 ? 'Today' : index < 4 ? 'Tomorrow' : 'In 7 days',
+            strength: index < 2 ? 'weak' : index < 4 ? 'medium' : 'strong',
+          }))}
           onStartLesson={() => setActiveTab('lessons')}
           onOpenReview={() => setActiveTab('review')}
           onSelectLesson={(lesson) => {
@@ -103,8 +112,7 @@ function App() {
       {activeTab === 'review' && (
         <ReviewView
           text={text}
-          reviewWords={reviewWords}
-          quiz={quiz}
+          lessons={lessons}
           answers={answers}
           score={score}
           onAnswer={(questionIndex, choiceIndex) => {

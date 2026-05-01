@@ -16,15 +16,15 @@ export function Dashboard({
   onOpenReview: () => void;
   onSelectLesson: (lesson: Lesson) => void;
 }) {
+  const todayLesson = lessons[0];
+
   return (
-    <main className="grid-layout">
-      <section className="hero-panel">
+    <main className="dashboard-layout">
+      <section className="hero-panel hero-panel-deep">
         <div className="hero-copy">
           <p className="section-label">{text.todayFocus}</p>
           <h2>{text.dashboardLead}</h2>
-          <p className="muted">
-            Your dashboard prioritizes what you need to study next, what you missed before, and what keeps the streak alive.
-          </p>
+          <p className="muted hero-body">{text.dashboardBody}</p>
           <div className="hero-badges">
             <span className="status-pill">{text.sessionTag}</span>
             <span className="status-pill soft">{text.dueTag}</span>
@@ -35,66 +35,78 @@ export function Dashboard({
           </div>
         </div>
 
-        <div className="hero-metrics">
-          <Stat label={text.lessonsDone} value="12" />
-          <Stat label={text.wordsLearned} value="148" />
-          <Stat label={text.currentStreak} value="6 days" />
+        <div className="study-plan-card">
+          <SectionTitle title={text.studyPlanTitle} subtitle={text.studyPlanSub} />
+          <div className="plan-row">
+            <span>{text.planToday}</span>
+            <strong>{todayLesson.title}</strong>
+          </div>
+          <div className="plan-row">
+            <span>{text.reviewDue}</span>
+            <strong>{reviewWords[0].word}</strong>
+          </div>
+          <div className="plan-row">
+            <span>{text.lessonComplete}</span>
+            <strong>1 / 3</strong>
+          </div>
+          <div className="plan-row">
+            <span>{text.setGoal}</span>
+            <strong>15 min</strong>
+          </div>
         </div>
       </section>
 
-      <section className="panel">
-        <SectionTitle title={text.nextLessons} subtitle={text.nextLessonsSub} />
-        <div className="lesson-list">
-          {lessons.map((lesson) => (
-            <button
-              key={lesson.id}
-              className="lesson-row lesson-button"
-              onClick={() => onSelectLesson(lesson)}
-            >
-              <div>
-                <h4>{lesson.title}</h4>
-                <p className="muted">{lesson.words} core words, short examples, quick quiz</p>
-              </div>
-              <div className="lesson-meta">
-                <div className="progress-track">
-                  <div className="progress-fill" style={{ width: `${lesson.progress}%` }} />
+      <aside className="dashboard-side">
+        <section className="panel stats-panel">
+          <SectionTitle title={text.progressOverview} subtitle={text.progressOverviewSub} />
+          <div className="hero-metrics compact">
+            <Stat label={text.lessonsDone} value="12" />
+            <Stat label={text.wordsLearned} value="148" />
+            <Stat label={text.currentStreak} value="6 days" />
+          </div>
+        </section>
+
+        <section className="panel">
+          <SectionTitle title={text.nextLessons} subtitle={text.nextLessonsSub} />
+          <div className="lesson-list">
+            {lessons.map((lesson) => (
+              <button
+                key={lesson.id}
+                className="lesson-row lesson-button"
+                onClick={() => onSelectLesson(lesson)}
+              >
+                <div>
+                  <h4>{lesson.title}</h4>
+                  <p className="muted">
+                    {lesson.level} · {lesson.words} words · {lesson.minutes} min
+                  </p>
                 </div>
-                <span>{lesson.progress}%</span>
+                <div className="lesson-meta">
+                  <div className="progress-track">
+                    <div className="progress-fill" style={{ width: `${lesson.progress}%` }} />
+                  </div>
+                  <span>{lesson.progress}%</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel">
+          <SectionTitle title={text.reviewWords} subtitle={text.reviewWordsSub} />
+          <div className="review-stack">
+            {reviewWords.map((item) => (
+              <div className={`review-chip ${item.strength}`} key={item.word}>
+                <div>
+                  <strong>{item.word}</strong>
+                  <p className="muted">{item.meaning}</p>
+                </div>
+                <span>{item.nextReview}</span>
               </div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <SectionTitle title={text.reviewWords} subtitle={text.reviewWordsSub} />
-        <div className="word-grid">
-          {reviewWords.map((item) => (
-            <div className="word-chip" key={item.word}>
-              <strong>{item.word}</strong>
-              <span>{item.meaning}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel progress-panel">
-        <SectionTitle title={text.progressOverview} subtitle={text.progressOverviewSub} />
-        <div className="progress-stack">
-          <Stat label={text.weeklyTarget} value="5 lessons" />
-          <Stat label={text.quizAccuracy} value="84%" />
-          <Stat label={text.focusArea} value="Speaking basics" />
-        </div>
-        <div className="progress-bar-wrap">
-          <div className="progress-bar-header">
-            <span className="muted">{text.weeklyCompletion}</span>
-            <strong>62%</strong>
+            ))}
           </div>
-          <div className="progress-track big">
-            <div className="progress-fill" style={{ width: '62%' }} />
-          </div>
-        </div>
-      </section>
+        </section>
+      </aside>
     </main>
   );
 }
